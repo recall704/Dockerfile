@@ -1,0 +1,26 @@
+{
+  "scope": "/webdav/data",
+  "address": "0.0.0.0",
+  "port": "8080",
+  "tls": false,
+  "cert": "cert.pem",
+  "key": "key.pem",
+  "modify": true,
+  "users": [
+    {
+      "username": "admin",
+      "password": "123321"
+    }
+  ],
+  "rules": [
+        {
+          "regex": false
+        },
+        {
+          "allow": false
+        },
+        {
+          "path": ""
+        }
+    ]
+}

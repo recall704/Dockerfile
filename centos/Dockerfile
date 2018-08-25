@@ -4,11 +4,17 @@ LABEL author="recall704"
 LABEL email="tk657309822@gmail.com"
 
 ENV TZ=Asia/Shanghai
-ENV LC_ALL=zh_CN.utf8
 
-RUN set -ex \ 
-    rm -f /etc/yum.repos.d/*.repo && \
-    curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo && \
-    curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo && \
-    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo '$TZ' > /etc/timezone && \
-    localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
+RUN rm -rf /etc/yum.repo.d/*
+
+COPY Centos-Base.repo /etc/yum.repo.d/Centos-Base.repo
+COPY epel.repo /etc/yum.repo.d/epel.repo
+COPY resolv.conf /etc/resolv.conf
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo '$TZ' > /etc/timezone && \
+    sed -i -e '/^enabled/ s/1/0/' /etc/yum/pluginconf.d/fastestmirror.conf &&  \
+    localedef -c -f UTF-8 -i zh_CN zh_CN.utf8 
+
+ENV LANG=zh_CN.UTF-8 \
+    LANGUAGE=zh_CN:zh \
+    LC_ALL=zh_CN.UTF-8
